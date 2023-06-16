@@ -71,28 +71,28 @@ class MoneyManager extends Component {
     }
   }
 
-  onDeleteItem = id => {
+  onDeleteItems = id => {
     console.log(id)
     const {transactionList} = this.state
 
     const updateList = transactionList.filter(each => each.id !== id)
 
     const idList = transactionList.find(each => each.id === id)
+    console.log(idList.type === 'INCOME')
 
-    this.setState(prev => {
-      if (idList.type === 'INCOME') {
-        return {
-          transactionList: updateList,
-          balance: prev.balance - parseInt(idList.amount),
-          income: prev.income - parseInt(idList.amount),
-        }
-      }
-      return {
-        transactionList: updateList,
-        balance: prev.balance + parseInt(idList.amount),
-        expenses: prev.expenses - parseInt(idList.amount),
-      }
-    })
+    if (idList.type === 'INCOME') {
+      this.setState(prev => ({
+        transactionList: [...updateList],
+        balance: prev.balance - parseInt(idList.amount),
+        income: prev.income - parseInt(idList.amount),
+      }))
+    } else {
+      this.setState(pre => ({
+        transactionList: [...updateList],
+        balance: pre.balance + parseInt(idList.amount),
+        expenses: pre.expenses - parseInt(idList.amount),
+      }))
+    }
   }
 
   render() {
@@ -162,7 +162,9 @@ class MoneyManager extends Component {
                   //
                 }
               </select>
-              <button type="submit">Add</button>
+              <button type="button" onClick={this.onAdd}>
+                Add
+              </button>
             </form>
             <div className="history-container">
               <h1>History</h1>
@@ -177,7 +179,7 @@ class MoneyManager extends Component {
                   <TransactionItem
                     key={each.id}
                     eachList={each}
-                    onDeleteItem={this.onDeleteItem}
+                    onDeleteItem={this.onDeleteItems}
                   />
                 ))}
               </ul>

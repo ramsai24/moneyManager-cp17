@@ -12,9 +12,9 @@ const TransactionItem = props => {
   return (
     <li className="history-headers ">
       <p className="his-title">{title}</p>
-      <p className="his-title">{amount}</p>
+      <p className="his-title">Rs {amount}</p>
       <p className="his-title">{type}</p>
-      <button className="his-title" type="button" data-testid="delete">
+      <button data-testid="delete" className="his-title" type="button">
         <img
           src="https://assets.ccbp.in/frontend/react-js/money-manager/delete.png"
           alt="delete"
